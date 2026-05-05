@@ -1,108 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab | Crooney</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=DM+Mono:wght@300;400;500&family=Archivo:wght@100..900&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --ink: #0e0d0b;
-            --parchment: #f2ede4;
-            --cream: #faf7f2;
-            --mid: #7a7268;
-            --rule: #d4cdc0;
-        }
-        body {
-            background: var(--cream);
-            color: var(--ink);
-            font-family: 'Archivo', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 24px;
-        }
-        .tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--mid);
-            margin-bottom: 20px;
-        }
-        h1 {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: clamp(36px, 6vw, 64px);
-            font-weight: 300;
-            letter-spacing: -0.02em;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-        .desc {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: clamp(17px, 2vw, 21px);
-            font-weight: 300;
-            line-height: 1.65;
-            color: #2a2820;
-            max-width: 540px;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .rule {
-            width: 48px;
-            height: 2px;
-            background: var(--ink);
-            margin-bottom: 40px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .nav-links a {
-            font-family: 'DM Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--mid);
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            padding-bottom: 2px;
-            transition: border-color 0.2s, color 0.2s;
-        }
-        .nav-links a:hover {
-            color: var(--ink);
-            border-bottom-color: var(--ink);
-        }
-        footer {
-            position: fixed;
-            bottom: 24px;
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 0.12em;
-            color: var(--rule);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab — Experiments and Prototypes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Archivo:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Archivo', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --color-ink: #0e0d0b;
+      --color-parchment: #f2ede4;
+      --color-cream: #faf7f2;
+      --color-mid: #7a7268;
+      --color-rule: #d4cdc0;
+      --color-processes: #c8692a;
+      --color-resources: #3a6b8a;
+      --color-values: #4a7c59;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
+    body {
+      background: var(--color-cream);
+      color: var(--color-ink);
+      font-family: var(--font-sans);
+      font-size: 16px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--color-cream);
+      border-bottom: 1px solid var(--color-rule);
+    }
+    .topbar-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .topbar-inner::-webkit-scrollbar { display: none; }
+    .topbar-home {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--color-mid); text-decoration: none;
+      padding: 1rem 1.25rem 1rem 0;
+      border-right: 1px solid var(--color-rule);
+      white-space: nowrap; transition: color 0.15s;
+    }
+    .topbar-home:hover { color: var(--color-ink); }
+    .subnav { display: flex; flex: 1; overflow-x: auto; scrollbar-width: none; }
+    .subnav::-webkit-scrollbar { display: none; }
+    .subnav-link {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--color-mid); text-decoration: none;
+      padding: 1rem 1.1rem; white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .subnav-link:hover { color: var(--color-ink); }
+    .subnav-link.active { color: var(--color-ink); border-bottom-color: var(--color-ink); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1100px; margin: 0 auto;
+      padding: 5rem 2rem 4rem;
+      border-bottom: 1px solid var(--color-rule);
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--color-mid); margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 400; line-height: 1.15;
+      letter-spacing: -0.01em; color: var(--color-ink);
+      max-width: 760px; margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--color-mid); }
+    .hero-lead {
+      font-family: var(--font-serif);
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      font-weight: 300; line-height: 1.65;
+      color: #2a2820; max-width: 660px;
+    }
+
+    /* ── LAYOUT ── */
+    .page-body { max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      padding: 3.5rem 0 2rem;
+      border-top: 1px solid var(--color-rule);
+      margin-top: 2rem;
+    }
+    .section-eyebrow {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--color-mid); margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 400; line-height: 1.2;
+      color: var(--color-ink); margin-bottom: 0.75rem;
+    }
+    .section-desc {
+      font-size: 14.5px; color: #3a3830;
+      max-width: 640px; line-height: 1.7;
+    }
+
+    /* ── LAB CARDS ── */
+    .lab-grid { display: grid; gap: 0; margin-top: 2rem; }
+    .lab-card {
+      border: 1px solid var(--color-rule);
+      border-top: none; padding: 2rem 2rem 1.75rem;
+      background: var(--color-cream); transition: background 0.15s;
+    }
+    .lab-card:first-child { border-top: 1px solid var(--color-rule); }
+    .lab-card:hover { background: var(--color-parchment); }
+
+    .lab-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 1.5rem;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .lab-title-group { flex: 1; }
+    .lab-umbrella {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .lab-title {
+      font-family: var(--font-serif); font-size: 1.4rem;
+      font-weight: 500; line-height: 1.2; color: var(--color-ink);
+    }
+
+    .lab-phase {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 4px 10px; border: 1px solid;
+      white-space: nowrap; align-self: flex-start;
+    }
+    .phase-explore { color: var(--color-resources); border-color: rgba(58,107,138,0.4); }
+    .phase-evaluate { color: var(--color-processes); border-color: rgba(200,105,42,0.4); }
+    .phase-concept { color: var(--color-mid); border-color: var(--color-rule); }
+
+    .lab-body {
+      font-size: 14px; color: #3a3830;
+      line-height: 1.75; margin-bottom: 1.25rem;
+      max-width: 720px;
+    }
+    .lab-body p + p { margin-top: 0.75rem; }
+
+    .lab-tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+    .tag {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.06em; color: var(--color-mid);
+      border: 1px solid var(--color-rule);
+      padding: 3px 9px; display: inline-block;
+    }
+
+    .lab-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+    .lab-link {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; padding-bottom: 1px;
+      border-bottom: 1px solid; transition: color 0.15s, border-color 0.15s;
+    }
+    .link-site { color: var(--color-resources); border-color: rgba(58,107,138,0.35); }
+    .link-site:hover { color: var(--color-ink); border-color: var(--color-ink); }
+    .link-pending {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--color-mid);
+    }
+
+    /* ── S/E/E/D INDICATOR ── */
+    .seed-bar {
+      display: flex; gap: 2px; margin-bottom: 1rem;
+    }
+    .seed-step {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 8px; background: var(--color-parchment);
+      color: var(--color-mid); border: 1px solid var(--color-rule);
+    }
+    .seed-step.active {
+      background: var(--color-ink); color: var(--color-cream);
+      border-color: var(--color-ink);
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      border-top: 1px solid var(--color-rule);
+      padding: 2.5rem 2rem; max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.12em; color: var(--color-mid);
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-link {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--color-mid); text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-link:hover { color: var(--color-ink); }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.7s, transform 0.7s;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      .hero { padding: 3rem 1.25rem 2.5rem; }
+      .page-body { padding: 0 1.25rem 4rem; }
+      .lab-header { flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
 </head>
 <body>
-    <div class="tag">crooney.ca</div>
-    <h1>Lab</h1>
-    <div class="desc">Experiments, prototypes, and works in progress.</div>
-    <div class="rule"></div>
-    <nav class="nav-links">
-        <a href="https://vanisle.crooney.ca">VanIsle</a>
-        <a href="https://phd.crooney.ca">PhD</a>
-        <a href="https://projects.crooney.ca">Projects</a>
-        <a href="https://soundtrap.crooney.ca">Soundtrap</a>
-        <a href="https://aries.crooney.ca/overview">Aries</a>
-    </nav>
-    <footer>lab.crooney.ca</footer>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="https://crooney.ca" class="topbar-home">crooney.ca</a>
+    <div class="subnav">
+      <a href="#experiments" class="subnav-link active">Experiments</a>
+      <a href="#archives" class="subnav-link">Archives</a>
+      <a href="#previz" class="subnav-link">Pre-Viz</a>
+      <a href="https://projects.crooney.ca" class="subnav-link">Projects ↗</a>
+      <a href="https://phd.crooney.ca" class="subnav-link">PhD ↗</a>
+      <a href="https://aries.crooney.ca" class="subnav-link">ARIES ↗</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <p class="hero-eyebrow">lab.crooney.ca · Experiments, Prototypes, and Works in Progress</p>
+  <h1>The Lab — <em>Explore and Evaluate</em></h1>
+  <p class="hero-lead">Experimental projects, prototypes, and conceptual works operating in the Explore and Evaluate phases of the S/E/E/D methodology. Not yet linked to formal funding instruments — that's what makes them the lab. When a lab project generates sufficient empirical grounding, it migrates to <a href="https://projects.crooney.ca" style="color: var(--color-ink); text-decoration: underline; text-underline-offset: 3px;">projects.crooney.ca</a>.</p>
+</header>
+
+<main class="page-body">
+
+  <!-- EXPERIMENTS -->
+  <section id="experiments">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">Platform Experiments · S/E/E/D · Explore Phase</p>
+      <h2 class="section-title">Platform Experiments</h2>
+      <p class="section-desc">Concept-stage platforms and tools being explored before formal Mitacs application. Each one is testing a research question that will eventually require a funding instrument.</p>
+    </div>
+
+    <div class="lab-grid">
+
+      <!-- ISLANDCAMP -->
+      <div class="lab-card reveal">
+        <div class="lab-header">
+          <div class="lab-title-group">
+            <p class="lab-umbrella" style="color: var(--color-resources);">VanIsle · Access Layer · Place-Based Experience</p>
+            <h3 class="lab-title">IslandCamp</h3>
+          </div>
+          <span class="lab-phase phase-explore">S/E/E/D · Explore</span>
+        </div>
+        <div class="seed-bar">
+          <span class="seed-step active">Study</span>
+          <span class="seed-step active">Explore</span>
+          <span class="seed-step">Evaluate</span>
+          <span class="seed-step">Design</span>
+        </div>
+        <div class="lab-body">
+          <p>Operating system for car-free camping on Vancouver Island. Coordinates transport, gear, and multi-day travel logistics for visitors without vehicles — addressing the access layer of the VanIsle ecosystem. The research question: can a platform governance model make car-free wilderness access viable as a repeatable product rather than an exceptional experience?</p>
+          <p>When composed with VICSS (→ VanIsleCamp) or Megaband (→ CampfireJam), IslandCamp gains the Food + Drink and Sound registers respectively. Both compositions are in the lab pending IslandCamp's empirical grounding.</p>
+        </div>
+        <div class="lab-tags">
+          <span class="tag">Car-Free Access · Vancouver Island</span>
+          <span class="tag">Place-Based Experience</span>
+          <span class="tag">→ VanIsleCamp (w/ VICSS)</span>
+          <span class="tag">→ CampfireJam (w/ Megaband)</span>
+        </div>
+        <div class="lab-links">
+          <a href="https://vanisle.crooney.ca" class="lab-link link-site">VanIsle →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ARCHIVES -->
+  <section id="archives">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">National Archives · AI Restoration · Sound Register</p>
+      <h2 class="section-title">The National Archives</h2>
+      <p class="section-desc">Joel Flynn's archive of filmed live performances — AI-assisted restoration and multi-pathway commercialization.</p>
+    </div>
+
+    <div class="lab-grid">
+
+      <div class="lab-card reveal">
+        <div class="lab-header">
+          <div class="lab-title-group">
+            <p class="lab-umbrella" style="color: var(--color-mid);">Sound Register · AI Restoration · MML Partnership</p>
+            <h3 class="lab-title">The National Archives</h3>
+          </div>
+          <span class="lab-phase phase-evaluate">S/E/E/D · Evaluate</span>
+        </div>
+        <div class="seed-bar">
+          <span class="seed-step active">Study</span>
+          <span class="seed-step active">Explore</span>
+          <span class="seed-step active">Evaluate</span>
+          <span class="seed-step">Design</span>
+        </div>
+        <div class="lab-body">
+          <p>Joel Flynn's archive of 19 filmed live performances of The National (2005–2011), four of them multi-camera Vancouver productions. AI-assisted restoration and multi-pathway commercialization across documentary, installation, and live release formats — in partnership with Multimodal Media Lab (MML), Vancouver.</p>
+          <p>The archive connects to Audiofish™ curatorially via the monthly themed programming system. The infrastructure overlap point with the formal projects: Soundtrap as the online DAW platform bridging the National Archives restoration workflow and the Megaband/Audiofish musician onboarding system. Grammy-winning vocal engineer Sean O'Brien is the target recruit for the restoration phase.</p>
+        </div>
+        <div class="lab-tags">
+          <span class="tag">The National · 2005–2011</span>
+          <span class="tag">19 Live Performances · 4 Multi-Camera</span>
+          <span class="tag">AI Restoration · MML</span>
+          <span class="tag">Soundtrap · Sean O'Brien</span>
+          <span class="tag">Documentary · Installation · Live Release</span>
+        </div>
+        <div class="lab-links">
+          <a href="https://projects.crooney.ca/national-archives/" class="lab-link link-site">Archive page →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRE-VIZ -->
+  <section id="previz">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">Immersive Pre-Visualization · MML · ClearLED · Evoke</p>
+      <h2 class="section-title">Immersive Pre-Visualization</h2>
+      <p class="section-desc">Experimental event pre-visualization work — testing the |F|D|S|L| schema in live hospitality contexts through themed event design.</p>
+    </div>
+
+    <div class="lab-grid">
+
+      <!-- CASABLANCA -->
+      <div class="lab-card reveal">
+        <div class="lab-header">
+          <div class="lab-title-group">
+            <p class="lab-umbrella" style="color: var(--color-processes);">MML · ClearLED · PDA · Evoke · All |F|D|S|L| Registers</p>
+            <h3 class="lab-title">"As Time Goes By" — Casablanca Immersive Event</h3>
+          </div>
+          <span class="lab-phase phase-evaluate">S/E/E/D · Evaluate</span>
+        </div>
+        <div class="seed-bar">
+          <span class="seed-step active">Study</span>
+          <span class="seed-step active">Explore</span>
+          <span class="seed-step active">Evaluate</span>
+          <span class="seed-step">Design</span>
+        </div>
+        <div class="lab-body">
+          <p>Immersive event pre-visualization workflow development through a Casablanca-themed case study across four Vancouver / Island venues — Painter's Lodge (Campbell River), The American Bar (Main Street Vancouver), Relish Bar (Downtown Vancouver), and Hollywood Theatre (Broadway Vancouver). Partners: Multimodal Media Lab (MML) as primary pre-visualization partner; ClearLED as transparent LED display technology provider; Pacific Design Academy (PDA) as set and stage design partner.</p>
+          <p>The case study deploys all four |F|D|S|L| registers simultaneously — Food + Drink (Moroccan-French fusion menu; cocktail program), Sound (live jazz; "As Time Goes By"), and Light (ClearLED transparent displays showing Casablanca scenes and Morocco imagery; Evoke in-venue graphic integration). Theoretical grounding: Eco's hyperreality framework (*Casablanca: Cult Movies and Intertextual Collage*, 1984) and Bourdain's multi-modal cultural encounter methodology.</p>
+          <p>Target date: late June 2026 — anchored to Anthony Bourdain's birthday (June 25) as a commemorative cult value activation. Not fixed on that date if operationally or commercially suboptimal.</p>
+        </div>
+        <div class="lab-tags">
+          <span class="tag">All |F|D|S|L| Registers</span>
+          <span class="tag">MML · ClearLED · PDA · Evoke</span>
+          <span class="tag">Casablanca · Eco · Bourdain</span>
+          <span class="tag">4 Venues · Pre-Visualization</span>
+          <span class="tag">Painter's Lodge · The American · Hollywood Theatre</span>
+          <span class="tag">Bourdain Birthday · June 25</span>
+          <span class="tag">Mitacs Proposal · Lab Stage</span>
+        </div>
+        <div class="lab-links">
+          <span class="link-pending">↳ Mitacs proposal drafted — lab stage pending partner confirmation</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="site-footer">
+    <span class="footer-note">lab.crooney.ca · Experiments and Prototypes · 1730 Technology Consulting Inc.</span>
+    <div class="footer-links">
+      <a href="https://projects.crooney.ca" class="footer-link">Projects</a>
+      <a href="https://phd.crooney.ca" class="footer-link">PhD</a>
+      <a href="https://aries.crooney.ca" class="footer-link">ARIES</a>
+      <a href="https://crooney.ca" class="footer-link">crooney.ca</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  const sections = ['experiments', 'archives', 'previz'];
+  const navLinks = document.querySelectorAll('.subnav-link');
+  const sectObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`.subnav-link[href="#${e.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(id => { const el = document.getElementById(id); if (el) sectObserver.observe(el); });
+</script>
 </body>
 </html>
